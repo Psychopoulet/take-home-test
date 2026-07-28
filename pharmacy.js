@@ -7,6 +7,7 @@ const MAX_BENEFIT = 50;
 const HERBAL_TEA = "Herbal Tea";
 const FERVEX = "Fervex";
 const MAGIC_PILL = "Magic Pill";
+const DAFALGAN = "Dafalgan";
 
 /** PRIVATE HELPERS */
 
@@ -88,11 +89,27 @@ function _updateMagicPill() {
   // no-op
 }
 
+/**
+ * Dafalgan: degrades in benefit twice as fast as normal drugs.
+ * -2 per day, -4 after expiration.
+ */
+function _updateDafalgan(drug) {
+
+  _decreaseBenefit(drug, 2);
+  _decreaseExpiresIn(drug);
+
+  if (drug.expiresIn < 0) {
+    _decreaseBenefit(drug, 2);
+  }
+
+}
+
 /** Dispatch table: drug name → private update rule. */
 const UPDATERS = {
   [HERBAL_TEA]: _updateHerbalTea,
   [FERVEX]: _updateFervex,
   [MAGIC_PILL]: _updateMagicPill,
+  [DAFALGAN]: _updateDafalgan,
 };
 
 /** END PRIVATE HELPERS */
@@ -109,6 +126,7 @@ const UPDATERS = {
  * - "Herbal Tea": benefit increases over time (twice as fast after expiry).
  * - "Fervex": benefit rises faster as expiry approaches, then drops to 0.
  * - "Magic Pill": never expires and never changes benefit.
+ * - "Dafalgan": degrades twice as fast as normal drugs (-2 / -4 after expiry).
  */
 export class Pharmacy {
 
