@@ -110,6 +110,32 @@ describe("Pharmacy", () => {
     });
   });
 
+  describe("Dafalgan", () => {
+    it("should degrade benefit twice as fast as normal drugs", () => {
+      expect(
+        new Pharmacy([new Drug("Dafalgan", 10, 20)]).updateBenefitValue(),
+      ).toEqual([new Drug("Dafalgan", 9, 18)]);
+    });
+
+    it("should degrade benefit by 4 after expiration", () => {
+      expect(
+        new Pharmacy([new Drug("Dafalgan", 0, 20)]).updateBenefitValue(),
+      ).toEqual([new Drug("Dafalgan", -1, 16)]);
+    });
+
+    it("should never make benefit negative", () => {
+      expect(
+        new Pharmacy([new Drug("Dafalgan", 5, 1)]).updateBenefitValue(),
+      ).toEqual([new Drug("Dafalgan", 4, 0)]);
+    });
+
+    it("should never make benefit negative after expiration", () => {
+      expect(
+        new Pharmacy([new Drug("Dafalgan", 0, 3)]).updateBenefitValue(),
+      ).toEqual([new Drug("Dafalgan", -1, 0)]);
+    });
+  });
+
   describe("30-day simulation regression", () => {
 
     it("should match output.json", async () => {
