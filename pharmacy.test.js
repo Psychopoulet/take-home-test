@@ -161,6 +161,30 @@ describe("Pharmacy", () => {
 
     });
 
+    it("should match output_updated.json including Dafalgan", async () => {
+
+      const drugs = [
+        new Drug("Doliprane", 20, 30),
+        new Drug("Herbal Tea", 10, 5),
+        new Drug("Fervex", 12, 35),
+        new Drug("Magic Pill", 15, 40),
+        new Drug("Dafalgan", 20, 30),
+      ];
+      const pharmacy = new Pharmacy(drugs);
+      const log = [];
+
+      for (let elapsedDays = 0; elapsedDays < 30; elapsedDays++) {
+        log.push(JSON.parse(JSON.stringify(pharmacy.updateBenefitValue())));
+      }
+
+      const expected = JSON.parse(
+        await readFile(join(__dirname, "output_updated.json"), "utf8")
+      );
+
+      expect({ result: log }).toEqual(expected);
+
+    });
+
   });
 
 });
