@@ -8,8 +8,8 @@
     "test": "jest",
     "start": "babel-node index.js"
   },
-  "devDependencies": {},
-  "dependencies": {
+  "dependencies": {},
+  "devDependencies": {
     "@babel/cli": "^7.24.1",
     "@babel/core": "^7.24.4",
     "@babel/eslint-parser": "^7.24.1",
